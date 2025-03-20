@@ -1,7 +1,32 @@
-import "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Products from "./Products";
+import Options from "./Options";
 
 const Type = ({ orderType }) => {
-  console.log("orderType", orderType);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    loadItems(orderType);
+  }, [orderType]);
+
+  const loadItems = async (orderType) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${orderType}`);
+      setItems(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const ItemComponent = orderType === "products" ? Products : Options;
+  const optionItems = items.map((item) => (
+    <ItemComponent
+      key={item.name}
+      name={item.name}
+      imagePath={item.imagePath}
+    />
+  ));
 
   return (
     <div>
@@ -15,7 +40,7 @@ const Type = ({ orderType }) => {
           flexDirection: orderType === "options" ? "column" : "row",
         }}
       >
-        Items
+        {optionItems}
       </div>
     </div>
   );
