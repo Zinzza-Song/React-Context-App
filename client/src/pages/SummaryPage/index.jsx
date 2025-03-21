@@ -4,7 +4,7 @@ const SummaryPage = () => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <div>
+    <div style={{ marginTop: "20px" }}>
       <form>
         <input
           type="checkbox"
