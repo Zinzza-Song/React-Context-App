@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Products from "./Products";
 import Options from "./Options";
+import ErrorBanner from "./ErrorBanner";
 
 const Type = ({ orderType }) => {
   const [items, setItems] = useState([]);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     loadItems(orderType);
@@ -15,9 +18,12 @@ const Type = ({ orderType }) => {
       const res = await axios.get(`http://localhost:4000/${orderType}`);
       setItems(res.data);
     } catch (err) {
-      console.log(err);
+      setError(true);
+      setErrorMessage(err.toString());
     }
   };
+
+  if (error) return <ErrorBanner message={errorMessage} />;
 
   const ItemComponent = orderType === "products" ? Products : Options;
   const optionItems = items.map((item) => (
