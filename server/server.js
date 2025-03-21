@@ -8,7 +8,7 @@ app.use(express.json());
 const port = 4000;
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -21,12 +21,10 @@ const travelDataRaw = fs.readFileSync("./travel.json", "utf-8");
 const travelData = JSON.parse(travelDataRaw);
 
 app.get("/products", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
   res.json(travelData.countries);
 });
 
 app.get("/options", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
   res.json(travelData.options);
 });
 
